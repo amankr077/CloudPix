@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudPix</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        .navbar {
+            background: linear-gradient(90deg, #8E2DE2, #4A00E0);
+            color: white;
+        }
+        
+        .navbar .navbar-brand {
+            color: white;
+            font-size: 30px;
+        }
+
+        .upload-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="file"] {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 5px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .gallery-container {
+            margin: 40px auto;
+            padding: 20px;
+            max-width: 800px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .gallery-container h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        #images img {
+            width: 200px;
+            height: auto;
+            border-radius: 2px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        
+
+        
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">CloudPix</a>
+        </div>
+      </nav>
+
+    <div class="upload-container">
+        <h1>Upload Your Image</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+
+    <div class="gallery-container">
+        <h2>Gallery</h2>
+        <div id="images"></div>
+    </div>
+
+
+    <script>   //ye script image ko fetch karke gallery mai show karega
+
+        async function fetchImages() {
+            const response = await fetch('/images');
+            const imageUrls = await response.json();
+            const imagesDiv = document.getElementById('images');
+            imagesDiv.innerHTML = '';
+
+            imageUrls.forEach(url => {
+                const img = document.createElement('img');
+                img.src = url;
+                imagesDiv.appendChild(img);
+            });
+        }
+
+        window.onload = fetchImages;   //jab load ho raha hoga tab image load karega
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
